@@ -28,18 +28,27 @@ func Sort(vals []int) {
 }
 
 //export Hello
-func Hello() int {
+func Hello() {
 	mtx.Lock()
 	defer mtx.Unlock()
 	fmt.Println("Hello from GO")
-	count++
-	return count
 }
+
 //export Log
 func Log(msg string) {
 	mtx.Lock()
 	defer mtx.Unlock()
 	fmt.Println(msg)
 }
+
+//export LogAndCount
+func LogAndCount(msg string) int {
+	mtx.Lock()
+	defer mtx.Unlock()
+	fmt.Println(msg)
+	count++
+	return count
+}
+
 
 func main() {}

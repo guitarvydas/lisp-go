@@ -71,9 +71,11 @@ extern GoFloat64 Cosine(GoFloat64 p0);
 
 extern void Sort(GoSlice p0);
 
-extern GoInt Hello();
+extern void Hello();
 
 extern void Log(GoString p0);
+
+extern GoInt LogAndCount(GoString p0);
 
 #ifdef __cplusplus
 }
