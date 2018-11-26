@@ -41,16 +41,14 @@ func Log(msg string) {
 	fmt.Println(msg)
 }
 
-//export LogAndCount
-func LogAndCount(msg string) int {
-	mtx.Lock()
-	defer mtx.Unlock()
-	fmt.Println(msg)
-	count++
-	return count
+//export Count0
+func Count0 () int {
+     msg := "abc"
+     return len(msg)
 }
 
-//export GoStrlen
+
+//export LogAndCount
 func LogAndCount(msg string) int {
 	mtx.Lock()
 	defer mtx.Unlock()
