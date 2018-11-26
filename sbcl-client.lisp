@@ -13,12 +13,16 @@
 (cffi:defcfun ("Log" my-log) :void
   (msg :string))
 
+(cffi:defcfun ("GoStrlen" go-strlen) :int
+  (msg :string))
+
 (defun main (argv)
   (declare (ignore argv))
   (cffi:load-foreign-library :libgoprog)
   (format *standard-output* "in lisp~%foreign-library-directories /~a/~%" cffi:*foreign-library-directories*)
   ;(hello)
-  (my-log "logged from lisp through GO")
+  ;(my-log "logged from lisp through GO")
+  (format *standard-output* "length of string counted by Go /~a/~%" (go-strlen "abc"))
   "back to lisp")
 
 (main 0)

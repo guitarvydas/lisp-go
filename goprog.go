@@ -50,5 +50,14 @@ func LogAndCount(msg string) int {
 	return count
 }
 
+//export GoStrlen
+func LogAndCount(msg string) int {
+	mtx.Lock()
+	defer mtx.Unlock()
+	fmt.Println(msg)
+	count++
+	return count
+}
+
 
 func main() {}
