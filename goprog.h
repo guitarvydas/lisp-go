@@ -75,6 +75,10 @@ extern void Hello();
 
 extern void Log(GoString p0);
 
+extern GoInt Count1(GoString p0);
+
+extern GoInt Count01();
+
 extern GoInt Count0();
 
 extern GoInt LogAndCount(GoString p0);
