@@ -4,6 +4,23 @@
 (load "~/quicklisp/setup.lisp")
 
 (quicklisp:quickload :cffi)
+(ql:quickload :cffi-libffi)
+
+
+(in-package #:cffi)
+
+(define-foreign-library (libffi)
+  (:darwin (:or "libffi.dylib" "libffi32.dylib" "/usr/lib/libffi.dylib"))
+  (:solaris (:or "/usr/lib/amd64/libffi.so" "/usr/lib/libffi.so"))
+  (:openbsd "libffi.so")
+  (:unix (:or "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5"))
+  (:windows (:or "libffi-6.dll" "libffi-5.dll" "libffi.dll"))
+  (t (:default "libffi")))
+
+
+(load-foreign-library 'libffi)
+
+(in-package #:cl-user)
 
 (cffi:defcstruct go-string
   (str :string)
@@ -18,7 +35,7 @@
 (cffi:defcfun ("Hello" hello) :void)
 
 (cffi:defcfun ("Log" my-log) :void
-  (msg (:pointer (:struct go-string))))
+  (msg (:struct go-string)))
 
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
@@ -61,9 +78,6 @@
 (defun main (argv)
   (declare (ignore argv))
   (cffi:load-foreign-library :libgoprog)
-  (format *standard-output* 
-	  "~%(ignore Undefined alien warnings above)~%~%in lisp~%foreign-library-directories /~a/~%" 
-	  cffi:*foreign-library-directories*)
   (hello)
 
   ;; lisp strings --> Go --> Lisp is still a problem
