@@ -37,5 +37,38 @@
     #+nil(cffi:foreign-string-free msg))  ;; string must be deallocated before freeing *pstr*
   #+nil(cffi:foreign-free *pstr*)) ;; deallocation of *pstr*
 
+(defun create-go-string (lisp-str)
+  "make a Go string from lisp-str, return cffi address of the Go string"
+  (let ((ty '(:struct go-string)))
+    (let ((go-str (cffi:foreign-alloc ty)))
+      (setf (cffi:foreign-slot-value go-str ty 'str) lisp-str
+            (cffi:foreign-slot-value go-str ty 'count) (length lisp-str))
+      go-str)))
+
+(defun string-part (go-str)
+  "return the Lisp string associated with the Go string"
+  (let ((ty '(:struct go-string)))
+    (cffi:foreign-slot-value go-str ty 'str)))
+
+(defun count-part (go-str)
+  "return the Lisp number associated with the length of the Go string"
+  (let ((ty '(:struct go-string)))
+    (cffi:foreign-slot-value go-str ty 'count)))  
+
+(defun go-string-to-lisp (go-str)
+  "lispify given Go string and return 2 values - the string and its count"
+  (values
+   (string-part go-str)
+   (count-part go-str)))
+  
+(defun free-go-string (go-str)
+  ;; kill the Go string
+  (cffi:foreign-string-free (string-part go-str))
+  (cffi:foreign-free go-str))
+
+(defun test3 ()
+  (let ((go-str (create-go-string "abc")))
+    (format *standard-output* "string /~s/ count /~s/~%" (string-part go-str) (count-part go-str))))
+
 (defun main ()
-  (test2))
+  (test3))
