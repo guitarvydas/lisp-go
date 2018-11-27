@@ -7,9 +7,7 @@
 (ql:quickload :cffi-libffi)
 
 
-(in-package #:cffi)
-
-(define-foreign-library (libffi)
+(cffi:define-foreign-library :libffi
   (:darwin (:or "libffi.dylib" "libffi32.dylib" "/usr/lib/libffi.dylib"))
   (:solaris (:or "/usr/lib/amd64/libffi.so" "/usr/lib/libffi.so"))
   (:openbsd "libffi.so")
@@ -17,10 +15,7 @@
   (:windows (:or "libffi-6.dll" "libffi-5.dll" "libffi.dll"))
   (t (:default "libffi")))
 
-
-(load-foreign-library 'libffi)
-
-(in-package #:cl-user)
+(cffi:load-foreign-library :libffi)
 
 (cffi:defcstruct go-string
   (str :string)
@@ -34,8 +29,12 @@
 
 (cffi:defcfun ("Hello" hello) :void)
 
+;(cffi:defcfun ("Log" my-log) :void
+;  (msg (:struct go-string)))
+
 (cffi:defcfun ("Log" my-log) :void
-  (msg (:struct go-string)))
+  (msg-str :string)
+  (msg-count :int))
 
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
@@ -77,6 +76,7 @@
 
 (defun main (argv)
   (declare (ignore argv))
+  (cffi:load-foreign-library :libffi)
   (cffi:load-foreign-library :libgoprog)
   (hello)
 
@@ -92,7 +92,8 @@
     (format *standard-output* "go-cosine (~a) returns ~a ~a~%" f (type-of c) c))
 
   (let ((gstr (create-go-string "abc from lisp")))
-    (my-log gstr)
+    ;(my-log gstr)
+    (my-log (string-part gstr) (count-part gstr))
     ;; need to deallocate!
     )
   
