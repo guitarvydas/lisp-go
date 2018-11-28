@@ -7,8 +7,7 @@
                (:module source
                         :pathname "./"
                         :depends-on (lib)
-                        :components ((:file "sbcl-client")
-                                     (:file "lw-client")))))
+                        :components ((:file "lisp-client")))))
 
                                             
 
