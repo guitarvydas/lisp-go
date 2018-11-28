@@ -3,21 +3,9 @@
 
 (load "~/quicklisp/setup.lisp")
 
-(ql:update-all-dists)
+;;reminder (ql:update-all-dists)
+
 (quicklisp:quickload :cffi)
-(ql:quickload :cffi-libffi)
-
-
-;; (cffi:define-foreign-library :libffi
-;;   #+nil(:darwin (:or "libffi.dylib" "libffi32.dylib" "/usr/lib/libffi.dylib"))
-;;   (:darwin "/usr/lib/libffi.dylib")
-;;   #+nil(:solaris (:or "/usr/lib/amd64/libffi.so" "/usr/lib/libffi.so"))
-;;   #+nil(:openbsd "libffi.so")
-;;   #+nil(:unix (:or "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5"))
-;;   #+nil(:windows (:or "libffi-6.dll" "libffi-5.dll" "libffi.dll"))
-;;   (t (:default "libffi")))
-
-;; (cffi:load-foreign-library :libffi)
 
 (cffi:defcstruct go-string
   (str :string)
@@ -86,7 +74,6 @@
 
 (defun main (argv)
   (declare (ignore argv))
-  (cffi:load-foreign-library :libffi)
   (cffi:load-foreign-library :libgoprog)
   (hello)
 
