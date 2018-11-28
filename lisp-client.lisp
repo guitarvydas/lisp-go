@@ -35,15 +35,6 @@
 	      count (length lisp-str))
       go-str-ptr))))
 
-#+nil 
-(defun create-go-string (lisp-str)
-  "make a Go string from lisp-str, return cffi address of the Go string"
-  (let ((ty '(:struct go-string)))
-    (let ((go-str (cffi:foreign-alloc ty)))
-      (setf (cffi:foreign-slot-value go-str ty 'str) lisp-str
-            (cffi:foreign-slot-value go-str ty 'count) (length lisp-str))
-      go-str)))
-
 (defun string-part (go-str)
   "return the Lisp string associated with the Go string"
   (let ((ty '(:struct go-string)))
