@@ -9,13 +9,13 @@
 (cffi:defcfun ("Hello" hello) :void)
 
 ; no trick
-(cffi:defcfun ("Log" my-log) :void
-  (msg (:struct go-string)))
+;(cffi:defcfun ("Log" my-log) :void
+;  (msg (:struct go-string)))
 
 ;; trick
-;(cffi:defcfun ("Log" my-log) :void
-;  (msg-str :string)
-;  (msg-count :int))
+(cffi:defcfun ("Log" my-log) :void
+  (msg-str :string)
+  (msg-count :int))
 
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
@@ -26,6 +26,16 @@
 (cffi:defcfun ("Cosine" go-cosine) :double
   (a :double))
 
+(defun create-go-string (lisp-str)
+  "make a Go string from lisp-str, return cffi address of the Go string"
+  (let ((ty '(:struct go-string)))
+    (let ((go-str-ptr (cffi:foreign-alloc ty)))
+      (cffi:with-foreign-slots ((str count) go-str-ptr (:struct go-string))
+	(setf str lisp-str
+	      count (length lisp-str))
+      go-str))))
+
+#+nil 
 (defun create-go-string (lisp-str)
   "make a Go string from lisp-str, return cffi address of the Go string"
   (let ((ty '(:struct go-string)))
@@ -78,8 +88,8 @@
     (format *standard-output* "go-cosine (~a) returns ~a ~a~%" f (type-of c) c))
 
   (let ((gstr (create-go-string "abc from lisp")))
-    (my-log gstr) ;; no trick
-    #+nil(my-log (string-part gstr) (count-part gstr)) ;; trick
+    #+nil(my-log gstr) ;; no trick
+    (my-log (string-part gstr) (count-part gstr)) ;; trick
     ;; need to deallocate!
     )
   
