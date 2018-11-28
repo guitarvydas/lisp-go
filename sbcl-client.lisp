@@ -3,6 +3,7 @@
 
 (load "~/quicklisp/setup.lisp")
 
+(ql:update-all-dists)
 (quicklisp:quickload :cffi)
 (ql:quickload :cffi-libffi)
 
