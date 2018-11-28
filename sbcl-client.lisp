@@ -33,7 +33,7 @@
       (cffi:with-foreign-slots ((str count) go-str-ptr (:struct go-string))
 	(setf str lisp-str
 	      count (length lisp-str))
-      go-str))))
+      go-str-ptr))))
 
 #+nil 
 (defun create-go-string (lisp-str)
@@ -93,6 +93,6 @@
     ;; need to deallocate!
     )
   
-  (format *standard-output* "~%back to lisp"))
+  (format *standard-output* "~%back to lisp~%"))
 
 

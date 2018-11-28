@@ -8,9 +8,7 @@
                         :pathname "./"
                         :depends-on (lib)
                         :components ((:file "sbcl-client")
-                                     (:file "lw-client")
-                                     (:file "x")
-                                     (:file "sbcl-strings")))))
+                                     (:file "lw-client")))))
 
                                             
 
