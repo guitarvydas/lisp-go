@@ -1,21 +1,10 @@
 ;; usage : sbcl --load "sbcl-client" --eval "(main 0)"
 
-
-(load "~/quicklisp/setup.lisp")
-
 ;;reminder (ql:update-all-dists)
-
-(quicklisp:quickload :cffi)
 
 (cffi:defcstruct go-string
   (str :string)
   (count :int))
-
-(cffi:define-foreign-library
-    :libgoprog
-    (:darwin     "/Users/tarvydas/projects/lisp-go/goprog.so")
-					;(:linux      "goprog.so")
-  (t (:default "goprog.so")))
 
 (cffi:defcfun ("Hello" hello) :void)
 
@@ -72,7 +61,7 @@
 ;;;   (setf (cffi:foreign-slot-value pointer ty 'str) lisp-str
 ;;;         (cffi:foreign-slot-value pointer ty 'count) (length lisp-str)))
 
-(defun main (argv)
+(defun sbcl-main (argv)
   (declare (ignore argv))
   (cffi:load-foreign-library :libgoprog)
   (hello)

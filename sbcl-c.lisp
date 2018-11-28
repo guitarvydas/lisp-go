@@ -1,5 +1,4 @@
-(load "~/quicklisp/setup.lisp")
-(ql:quickload :cffi)
+(in-package :cl-user)
 
 (cffi:defcfun "strlen" :int
   (n :string))
