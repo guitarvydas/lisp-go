@@ -8,11 +8,12 @@
 
 
 (cffi:define-foreign-library :libffi
-  (:darwin (:or "libffi.dylib" "libffi32.dylib" "/usr/lib/libffi.dylib"))
-  (:solaris (:or "/usr/lib/amd64/libffi.so" "/usr/lib/libffi.so"))
-  (:openbsd "libffi.so")
-  (:unix (:or "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5"))
-  (:windows (:or "libffi-6.dll" "libffi-5.dll" "libffi.dll"))
+  #+nil(:darwin (:or "libffi.dylib" "libffi32.dylib" "/usr/lib/libffi.dylib"))
+  (:darwin "/usr/lib/libffi.dylib")
+  #+nil(:solaris (:or "/usr/lib/amd64/libffi.so" "/usr/lib/libffi.so"))
+  #+nil(:openbsd "libffi.so")
+  #+nil(:unix (:or "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5"))
+  #+nil(:windows (:or "libffi-6.dll" "libffi-5.dll" "libffi.dll"))
   (t (:default "libffi")))
 
 (cffi:load-foreign-library :libffi)
@@ -29,12 +30,14 @@
 
 (cffi:defcfun ("Hello" hello) :void)
 
-;(cffi:defcfun ("Log" my-log) :void
-;  (msg (:struct go-string)))
-
+; no trick
 (cffi:defcfun ("Log" my-log) :void
-  (msg-str :string)
-  (msg-count :int))
+  (msg (:struct go-string)))
+
+;; trick
+;(cffi:defcfun ("Log" my-log) :void
+;  (msg-str :string)
+;  (msg-count :int))
 
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
@@ -74,6 +77,12 @@
   (cffi:foreign-string-free (string-part go-str))
   (cffi:foreign-free go-str))
 
+;;; (defmethod cffi:translate-into-foreign-memory (lisp-str (type-name go-string-tclass) pointer)
+;;;   (cffi:with-foreign-pointer (pointer 8)
+;;;     
+;;;   (setf (cffi:foreign-slot-value pointer ty 'str) lisp-str
+;;;         (cffi:foreign-slot-value pointer ty 'count) (length lisp-str)))
+
 (defun main (argv)
   (declare (ignore argv))
   (cffi:load-foreign-library :libffi)
@@ -92,8 +101,8 @@
     (format *standard-output* "go-cosine (~a) returns ~a ~a~%" f (type-of c) c))
 
   (let ((gstr (create-go-string "abc from lisp")))
-    ;(my-log gstr)
-    (my-log (string-part gstr) (count-part gstr))
+    (my-log gstr) ;; no trick
+    #+nil(my-log (string-part gstr) (count-part gstr)) ;; trick
     ;; need to deallocate!
     )
   
