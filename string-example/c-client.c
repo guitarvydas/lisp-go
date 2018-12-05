@@ -10,10 +10,10 @@ int main() {
 
     Hello();
 
-    //Call Log() - passing string value
+    //Call Log() - passing static string value
     Log(msg);
 
-    _GoString_ amsg = {"Hello from auto var in C", 24};
+    _GoString_ amsg = {"Hello from auto (stack) var in C", 24};
     Log(amsg);
 
 }
