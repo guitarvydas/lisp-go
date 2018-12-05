@@ -12,6 +12,9 @@
 
 (cffi:defcfun ("Hello" hello) :void)
 
+(cffi:defcfun ("Log" my-log) :void
+  (str (:struct go-string)))
+
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
 (defun main (argv)
