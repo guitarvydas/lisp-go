@@ -2,7 +2,7 @@
 
 (in-package :cl-user)
 
-(cffi:define-foreign-library :libgolib
+(cffi:define-foreign-library :golib
     (:darwin     "/Users/tarvydas/projects/lisp-go/string-example/golib.so")
   (t (:default "golib.so")))
 
@@ -19,6 +19,7 @@
 
 (defun main (argv)
   (declare (ignore argv))
-  (cffi:load-foreign-library :libgolib)
-  (hello))
+  (cffi:load-foreign-library :golib)
+  (hello)
+  (my-log "Hello from Lisp"))
 
