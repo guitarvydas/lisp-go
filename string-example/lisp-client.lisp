@@ -12,6 +12,10 @@
 
 (cffi:defcfun ("Hello" hello) :void)
 
+(cffi:defcfun ("Log" cheating-log) :void
+  (str :string)
+  (count :int))
+
 (cffi:defcfun ("Log" my-log) :void
   (str (:struct go-string)))
 
@@ -21,5 +25,6 @@
   (declare (ignore argv))
   (cffi:load-foreign-library :golib)
   (hello)
+  (cheating-log "Hello, cheating, from Lisp" 26)
   (my-log "Hello from Lisp"))
 
