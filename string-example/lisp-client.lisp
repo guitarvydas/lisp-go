@@ -33,5 +33,5 @@
       (cffi:load-foreign-library :golib)
       (hello)
       (cheating-log msg1 len1)
-      (my-log msg2))))
+      #+nil(my-log msg2))))
 
