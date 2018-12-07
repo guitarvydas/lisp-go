@@ -6,14 +6,8 @@
     (:darwin     "./golib.so")
   (t (:default "golib.so")))
 
-(defstruct ty-go-string
-  (str
-
-
-   to-foreign
-(cffi:with-foreign-string 
-(cffi:defcstruct (go-string :class ty-go-string)
-  (str :string)
+(cffi:defcstruct go-string
+    (str :string)
   (count :int))
 
 (cffi:defcfun ("Hello" hello) 
