@@ -3,10 +3,16 @@
 (in-package :cl-user)
 
 (cffi:define-foreign-library :golib
-    (:darwin     "/Users/tarvydas/projects/lisp-go/string-example/golib.so")
+    (:darwin     "./golib.so")
   (t (:default "golib.so")))
 
-(cffi:defcstruct go-string
+(defstruct ty-go-string
+  (str
+
+
+   to-foreign
+(cffi:with-foreign-string 
+(cffi:defcstruct (go-string :class ty-go-string)
   (str :string)
   (count :int))
 
@@ -24,14 +30,13 @@
     :void
   (str (:struct go-string)))
 
-
 (defun main (argv)
   (declare (ignore argv))
   (let ((msg1 "Hello, cheating, from Lisp")
-	(msg2 "Hello,         , from Lisp"))
+	(msg2 "Hello, ........, from Lisp"))
     (let ((len1 (length msg1)))
       (cffi:load-foreign-library :golib)
       (hello)
       (cheating-log msg1 len1)
-      #+nil(my-log msg2))))
+      (my-log msg2))))
 

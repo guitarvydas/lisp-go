@@ -27,15 +27,27 @@
   (a :double))
 
 (defun poke-str (lisp-str ty go-str-pointer)
-  (cffi:with-foreign-slots ((str count) go-str-pointer ty)
+  (cffi:with-foreign-slots ((str count) go-str-pointer (:struct go-string))
 	(setf str lisp-str
 	      count (length lisp-str))
       go-str-pointer))
 
 (defun create-go-string (lisp-str)
   "make a Go string from lisp-str, return cffi address of the Go string"
-  (let ((go-str-pointer (cffi:foreign-alloc '(:struct go-string))))
-    (poke-str lisp-str '(:struct go-string) go-str-pointer)))
+  (let ((ty '(:struct go-string)))
+    (let ((go-str-pointer (cffi:foreign-alloc ty)))
+      (poke-str lisp-str ty go-str-pointer))))
+
+;; (defun poke-str (lisp-str ty go-str-pointer)
+;;   (cffi:with-foreign-slots ((str count) go-str-pointer (:struct go-string))
+;; 	(setf str lisp-str
+;; 	      count (length lisp-str))
+;;       go-str-pointer))
+
+;; (defun create-go-string (lisp-str)
+;;   "make a Go string from lisp-str, return cffi address of the Go string"
+;;   (let ((go-str-pointer (cffi:foreign-alloc '(:struct go-string))))
+;;     (poke-str lisp-str '(:struct go-string) go-str-pointer)))
 
 (defun string-part (go-str)
   "return the Lisp string associated with the Go string"
