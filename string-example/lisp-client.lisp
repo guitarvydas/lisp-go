@@ -21,10 +21,8 @@
 
 (defun main (argv)
   (declare (ignore argv))
-  (let ((msg1 "Hello, cheating, from Lisp")
-	(msg2 "Hello, ........, from Lisp"))
-    (let ((len1 (length msg1)))
-      (cffi:load-foreign-library :golib)
-      (hello)          ;; shows that Go is successfully called
-      (my-log msg2)))) ;; shows that string passed to Go by-value is not working
+  (let ((msg "Hello, ........, from Lisp"))
+    (cffi:load-foreign-library :golib)
+    (hello)          ;; shows that Go is successfully called
+    (my-log msg))) ;; shows that string passed to Go by-value is not working
 
