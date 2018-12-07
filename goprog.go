@@ -9,7 +9,6 @@ import (
 	"sync"
 )
 
-var count int
 var mtx sync.Mutex
 
 //export Add
@@ -48,27 +47,5 @@ func Log(msg string) {
 func Count1 (msg string) int {
      return len(msg)
 }
-
-//export Count01
-func Count01 () int {
-     msg := "abc"
-     return Count1(msg)
-}
-
-//export Count0
-func Count0 () int {
-     msg := "abc"
-     return len(msg)
-}
-
-//export LogAndCount
-func LogAndCount(msg string) int {
-	mtx.Lock()
-	defer mtx.Unlock()
-	fmt.Println(msg)
-	count++
-	return count
-}
-
 
 func main() {}
