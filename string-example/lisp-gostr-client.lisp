@@ -6,9 +6,14 @@
     (:darwin     "./golib.so")
   (t (:default "golib.so")))
 
-(cffi:defcstruct go-string
+(cffi:defcstruct (go-string :class ty-go-string)
     (str :string)
   (count :int))
+
+(defmethod cffi:translate-into-foreign-memory (lisp-str (ty ty-go-string) foreign-pointer)
+    (cffi:with-foreign-slots ( (str count) foreign-pointer (:struct go-string) )
+      (setf str lisp-str
+	    count (length lisp-str))))
 
 (cffi:defcfun ("Hello" hello) 
     :void)
@@ -21,7 +26,7 @@
 
 (defun main (argv)
   (declare (ignore argv))
-  (let ((msg "Hello, ........, from Lisp"))
+  (let ((msg "Hello from Lisp"))
     (cffi:load-foreign-library :golib)
     (hello)          ;; shows that Go is successfully called
     (my-log msg))) ;; shows that string passed to Go by-value is not working

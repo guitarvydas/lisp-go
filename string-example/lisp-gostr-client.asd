@@ -1,6 +1,6 @@
-(defsystem lisp-client
+(defsystem lisp-gostr-client
   :depends-on (cffi
                cffi-libffi)
   :components ((:module source
                         :pathname "./"
-                        :components ((:file "lisp-client")))))
+                        :components ((:file "lisp-gostr-client")))))

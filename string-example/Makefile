@@ -13,6 +13,6 @@ c-client : $(C-FILES) $(GOLIBS)
 run : $(GOLIBS) $(C-EXECS)
 	./c-client
 	@echo ""
-	sbcl  --eval "(asdf:load-system :lisp-client)" --eval "(main nil)"
+	sbcl  --eval "(asdf:load-system :lisp-gostr-client)" --eval "(main nil)"
 
 
