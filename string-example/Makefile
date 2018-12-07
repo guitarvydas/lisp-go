@@ -1,18 +1,22 @@
-GOPROGS = golib.so
-C-FILES = c-client.c
-C-EXECS = c-client
+GO 	= 	go
 
-all : run $(GOLIBS) $(C-EXECS)
+all: run 
 
-%.so : %.go
-	go build -o $*.so -buildmode=c-shared $*.go
+%.so: %.go
+	$(GO) build -o $*.so -buildmode=c-shared $*.go
 
-c-client : $(C-FILES) $(GOLIBS)
+c-client: c-client.c golib.so
 	gcc -o c-client c-client.c ./golib.so
 
-run : $(GOLIBS) $(C-EXECS)
+LISP=sbcl
+
+run: c-client
 	./c-client
 	@echo ""
-	sbcl  --eval "(asdf:load-system :lisp-gostr-client)" --eval "(main nil)"
+	CL_SOURCE_REGISTRY=$(shell pwd) $(LISP) \
+	   \ --eval "(asdf:load-system :lisp-gostr-client)" --eval "(main nil)"
+
+clean:
+	rm golib.so golib.h c-client
 
 
