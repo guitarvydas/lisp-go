@@ -1,21 +1,13 @@
 ;; usage : sbcl --load "sbcl-client" --eval "(main 0)"
 
-;;reminder (ql:update-all-dists)
-
 (cffi:defcstruct go-string
   (str :string)
   (count :int))
 
 (cffi:defcfun ("Hello" hello) :void)
 
-; no trick
 (cffi:defcfun ("Log" my-log) :void
   (msg (:struct go-string)))
-
-;; trick (doesn't work on LW)
-;(cffi:defcfun ("Log" my-log) :void
-;  (msg-str :string)
-;  (msg-count :int))
 
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
@@ -57,12 +49,6 @@
   ;; kill the Go string
   (cffi:foreign-string-free (string-part go-str))
   (cffi:foreign-free go-str))
-
-;;; (defmethod cffi:translate-into-foreign-memory (lisp-str (type-name go-string-tclass) pointer)
-;;;   (cffi:with-foreign-pointer (pointer 8)
-;;;     
-;;;   (setf (cffi:foreign-slot-value pointer ty 'str) lisp-str
-;;;         (cffi:foreign-slot-value pointer ty 'count) (length lisp-str)))
 
 (defun main (argv)
   (declare (ignore argv))
