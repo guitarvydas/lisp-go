@@ -15,11 +15,6 @@
 
 ;; a go string is a C struct, "abc" ---> { "abc", 3 }
 
-(cffi:defcfun ("Log" cheating-log) ;; uses pass-by-ref only
-    :void
-  (str :string)
-  (count :int))
-
 (cffi:defcfun ("Log" my-log) ;; uses pass-by-value of struct
     :void
   (str (:struct go-string)))
@@ -30,7 +25,6 @@
 	(msg2 "Hello, ........, from Lisp"))
     (let ((len1 (length msg1)))
       (cffi:load-foreign-library :golib)
-      (hello)
-      (cheating-log msg1 len1)
-      (my-log msg2))))
+      (hello)          ;; shows that Go is successfully called
+      (my-log msg2)))) ;; shows that string passed to Go by-value is not working
 
