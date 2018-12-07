@@ -1,3 +1,4 @@
 *.so
 *~
 goprog.h
+c-client

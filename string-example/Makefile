@@ -10,11 +10,11 @@ c-client: c-client.c golib.so
 
 LISP=sbcl
 
-run: c-client
+run: c-client lisp-gostr-client.lisp
 	./c-client
 	@echo ""
 	CL_SOURCE_REGISTRY=$(shell pwd) $(LISP) \
-	   \ --eval "(asdf:load-system :lisp-gostr-client)" --eval "(main nil)"
+		--eval "(asdf:load-system :lisp-gostr-client)" --eval "(main nil)"
 
 clean:
 	rm golib.so golib.h c-client
