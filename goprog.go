@@ -43,9 +43,4 @@ func Log(msg string) {
 	fmt.Println(msg)
 }
 
-//export Count1
-func Count1 (msg string) int {
-     return len(msg)
-}
-
 func main() {}
