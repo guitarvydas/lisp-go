@@ -33,7 +33,7 @@
 (defun main (argv)
   (declare (ignore argv))
   (let ((msg1 "Hello, cheating, from Lisp")
-	(msg2 "Hello, ........, from Lisp"))
+	(msg2 "Hello,         , from Lisp"))
     (let ((len1 (length msg1)))
       (cffi:load-foreign-library :golib)
       (hello)
